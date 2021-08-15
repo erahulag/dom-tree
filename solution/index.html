@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DOM Tree - Example</title>
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+        
+    <link rel="stylesheet" type='text/css' href='./css/icons.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/modal.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/base.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/main.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/html.css'></link>
+
+    <script src='scripts/libs/react.js'></script>
+    <script src='scripts/libs/react-dom.js'></script>
+    <script src='scripts/libs/babel.js'></script>
+
+    <script src='scripts/utils/constants.js'></script>
+    <script src='scripts/utils/utils.js'></script>
+
+    <script name='Context' type="text/babel" src="scripts/components/Context.js"></script>
+    <script name='Icon' type="text/babel" src='scripts/components/Icon.js'></script>
+    <script name='ParentNode' type='text/babel' src='scripts/components/ParentNode.js'></script>
+    <script name='Node' type='text/babel' src='scripts/components/Node.js'></script>
+     <script name='SearchText' type='text/babel' src='scripts/components/SearchText.js'></script>
+    <script name='DomeTree' type='text/babel' src='scripts/components/DomTree.js'></script>
+    <script name='Dialog' type='text/babel' src='scripts/components/Dialog.js'></script>
+    <script name='DialogLauncher' type='text/babel' src='scripts/components/DialogLauncher.js'> </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div>Hello,</div>
+    <div>
+        I really enjoyed this excercise. I would have clearified few question if we have been doing it live,
+        plese find my assumption in red.
+        <div class='requirements'>
+            <h1 id="exercise-dom-tree-as-a-file-system bold">Exercise: DOM Tree as a File System</h1>
+            <p>This exercise is to build something that represents the DOM tree of a website as a file and folder
+                explorer.</p>
+            <p>Your implementation will be evaluated technically, but also by a designer, so CSS fidelity is important.
+            </p>
+            <p>You can use any tools or libraries you&#39;d like. (except an off-the-shelf tree control :)</p>
+            <h2 id="requirements">Requirements</h2>
+            <h3 id="general">General</h3>
+            <ul>
+                <li>Represent all the nodes in a DOM tree starting with <code>head</code> and <code>body</code> at the
+                    top level.</li>
+                <li>Do not include comment tags in the output, only text nodes and elements</li>
+                <li>Provided code should be runnable by a static web server without needing a build step.</li>
+            </ul>
+            <div class='rahul'>I assumption here is to use this page as file://[system_path]</div>
+            <h3 id="appearance">Appearance</h3>
+            <ul>
+                <li>What you build should look like a modal (Doesn&#39;t need to function like one. eg: open/close and
+                    dragging it around are not necessary)</li>
+                <li>Visually has the same colors, alignment, sizing, and shading as <code>mockup.png</code></li>
+                <li>Make the folder represented by the <code>head</code> tag &quot;private&quot;, with a red icon
+                    appearance.</li>
+            </ul>
+            <h3 id="interaction">Interaction</h3>
+            <ul>
+                <li>Implement some sort of basic selection appearance, but complex single-select or multi-select rules
+                    aren&#39;t required.</li>
+                <li>Both files and folders should be selectable.</li>
+            </ul>
+            <h3 id="folders">Folders</h3>
+            <ul>
+                <li>DOM element nodes should be represented as &quot;folders&quot;</li>
+                <li>Display the DOM element tag name next to folders</li>
+                <li>Folders can be expanded and collapsed by clicking</li>
+            </ul>
+            <h3 id="files">Files</h3>
+            <ul>
+                <li>Text nodes should be represented as &quot;files&quot;</li>
+                <li>Display a single line of text content next to &quot;files&quot;</li>
+                <li>Text truncates with ellipsis if too wide</li>
+            </ul>
+            <h2 id="example">Example</h2>
+            <p>For clarity, here&#39;s an example DOM section:</p>
+            <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+                Some Text
+                <span class="hljs-comment">&lt;!-- A Comment --&gt;</span>
+                More Text
+            <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+            </code></pre>
+            <p>This section of the DOM should be represented in the tree like this:</p>
+            <ul>
+                <li>body<ul>
+                        <li>p<ul>
+                                <li>Some Text</li>
+                                <li>More Text</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The two text nodes are represented as files, comments are not shown, and containing elements are
+                represented as folders.</p>
+            <img src='resources/mockup.png'></img>
+            <h2 id="evaluation-criteria">Evaluation Criteria</h2>
+            <ol>
+                <li>Functional Requirements met</li>
+                <li>DRY, reusable, well-thought-out code</li>
+                <li>Pixel-perfectness of CSS matching <code>mockup.png</code> in Chrome</li>
+            </ol>
+        </div>
+    </div>
+
+    <script type="text/babel" src='scripts/app.js'></script>
+</body>
+
+</html>

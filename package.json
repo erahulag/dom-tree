@@ -1,0 +1,14 @@
+{
+  "name": "dom-tree",
+  "version": "1.0.0",
+  "description": "Show DOM tree of current page in a dialog",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server solution -p 8088 -s --cors"
+  },
+  "author": "Rahul A",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^13.0.0"
+  }
+}

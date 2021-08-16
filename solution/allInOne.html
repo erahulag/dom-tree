@@ -13,10 +13,7 @@
 
     
     <script src='scripts/libs/react.js'></script> 
-    <script src='scripts/libs/react-dom.js'></script>
-    <!-- <script src='scripts/libs/babel.js'></script> -->
-    <!-- <script src="https://unpkg.com/react@16/umd/react.development.js"></script> -->
-    <!-- <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js"></script> -->
+    <script src='scripts/libs/react-dom.js'></script> 
     <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
 
     <script src='scripts/utils/constants.js'></script>
@@ -156,7 +153,9 @@
                 <label htmlFor='allExpanded'>Open  with all nodes expanded</label>
 
                 <OpenAllExpandedContext.Provider value={allExpanded}>
-                    {opened?<Dialog opened={opened} onFinish={()=>setOpen(false)}/>:null}
+                    {opened?<Dialog opened={opened} onFinish={()=>setOpen(false)}>
+                            <DomTree/>
+                        </Dialog>:null}
                 </OpenAllExpandedContext.Provider>
             </span>;
         } 
@@ -178,8 +177,8 @@
             </div>
         }
     </script>  
-    <script name='DomeTree' type='text/babel'>
-        function DomeTree(){ 
+    <script name='DomTree' type='text/babel'>
+        function DomTree(){ 
             const [filteredTree, setFilteredTree] = React.useState(null); 
             const [tree, setTree] = React.useState(null);
             const [headTree, setHeadTree] = React.useState(null);
@@ -221,7 +220,7 @@
         }
     </script>  
     <script name='Dialog' type='text/babel'>
-        function Dialog({opened, onFinish}){  
+        function Dialog({opened,children, onFinish}){  
             return <div className='dialog'> 
                 <div className='modal'>
                     <div className="head">
@@ -229,10 +228,10 @@
                        <Icon iconClassName='close'  onClick={onFinish}></Icon>
                     </div>
                     <div  className="body">
-                        <DomeTree/>
+                        {children}
                     </div>
                     <div  className="footer"> 
-                            <a href='README.md'>Help</a>
+                            <a href='resources/README.md'>Help</a>
                             <button className='done' onClick={onFinish}>Done</button> 
                     </div>
                 </div>

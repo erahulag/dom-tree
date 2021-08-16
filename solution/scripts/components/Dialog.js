@@ -1,4 +1,4 @@
-function Dialog({opened, onFinish}){  
+function Dialog({opened, children, onFinish}){  
     return <div className='dialog'> 
         <div className='modal'>
             <div className="head">
@@ -6,10 +6,10 @@ function Dialog({opened, onFinish}){
                <Icon iconClassName='close'  onClick={onFinish}></Icon>
             </div>
             <div  className="body">
-                <DomeTree/>
+               {children}
             </div>
             <div  className="footer"> 
-                    <a href='README.md'>Help</a>
+                    <a href='resources/README.md'>Help</a>
                     <button className='done' onClick={onFinish}>Done</button> 
             </div>
         </div>

@@ -14,7 +14,9 @@ function DialogLauncher({}) {
 
       <OpenAllExpandedContext.Provider value={allExpanded}>
         {opened ? (
-          <Dialog opened={opened} onFinish={() => setOpen(false)} />
+          <Dialog opened={opened} onFinish={() => setOpen(false)}>
+            <DomTree />
+          </Dialog>
         ) : null}
       </OpenAllExpandedContext.Provider>
     </span>

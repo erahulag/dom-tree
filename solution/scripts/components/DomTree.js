@@ -1,4 +1,4 @@
-function DomeTree() {
+function DomTree() {
   const [filteredTree, setFilteredTree] = React.useState(null);
   const [tree, setTree] = React.useState(null);
   const [headTree, setHeadTree] = React.useState(null);

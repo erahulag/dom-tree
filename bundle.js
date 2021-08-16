@@ -36,7 +36,7 @@ async function bundle() {
     );
 
     template = template.replace(
-      /.script.*type=.text.babel.*src=.scripts.app.js*/g,
+      /.script.*type=.text.babel.*src=.scripts.app.js.*/g,
       ""
     );
 

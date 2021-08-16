@@ -1,17 +1,15 @@
 
-.dialog {
-    display: flex;
-    position: absolute;
+.dialog { 
+    position: fixed;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
     background: rgba(200,200,200, .5); 
     display: flex;
-    justify-content: center;
-    padding: 20vh;
-    user-select: none;
-    pointer-events: painted;
+    flex-direction: row;
+    justify-content: center; 
+    user-select: none; 
 }
 
 .modal{
@@ -22,7 +20,8 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    width: 60vh;
+    margin-top:20vh;
+    width: 50vh;
     height: 60vh; 
     min-width: 300px;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);

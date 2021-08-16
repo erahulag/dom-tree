@@ -33,5 +33,5 @@ button{
 }
 button:hover{
     color:#FFFFFF;
-    font-weight: 600;
+    text-decoration: underline;
 }

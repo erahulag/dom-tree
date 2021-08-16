@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DOM Tree - Example</title>
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+        
+    <link rel="stylesheet" type='text/css' href='./css/icons.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/modal.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/base.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/main.css'></link>
+    <link rel="stylesheet" type='text/css' href='./css/html.css'></link>
+
+    <script src='scripts/libs/react.js'></script>
+    <script src='scripts/libs/react-dom.js'></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+    <script src='scripts/utils/constants.js'></script>
+    <script src='scripts/utils/utils.js'></script>
+        
+    
+    
+    
+    
+    
+    
+    
+    
+<script type="text/babel">
+const OpenAllExpandedContext = React.createContext();
+const SearchingContext = React.createContext();
+
+
+function Dialog({opened, children, onFinish}){  
+    return <div className='dialog'> 
+        <div className='modal'>
+            <div className="head">
+               <div className='heading'> DOM Tree </div>
+               <Icon iconClassName='close'  onClick={onFinish}></Icon>
+            </div>
+            <div  className="body">
+               {children}
+            </div>
+            <div  className="footer"> 
+                    <a href='resources/README.md'>Help</a>
+                    <button className='done' onClick={onFinish}>Done</button> 
+            </div>
+        </div>
+    </div>
+}
+
+function DialogLauncher({}) {
+  const [opened, setOpen] = React.useState(true);
+  const [allExpanded, setAllExpanded] = React.useState(false);
+  React.useEffect(()=> onOpen(), []);
+
+  const onOpen = (e) => {
+    document.body.style.position = "fixed";
+    setOpen(true);
+  };
+
+  const onClose = (e) => {
+    document.body.style.position = "relative";
+    setOpen(false);
+  };
+  return (
+    <span>
+      <button onClick={onOpen}>Show DOM Tree</button>
+      <input
+        id="allExpanded"
+        type="checkbox"
+        value={allExpanded}
+        onChange={(e) => setAllExpanded(!allExpanded)}
+      ></input>
+      <label htmlFor="allExpanded">Open with all nodes expanded</label>
+
+      <OpenAllExpandedContext.Provider value={allExpanded}>
+        {opened ? (
+          <Dialog opened={opened} onFinish={onClose}>
+            <DomTree />
+          </Dialog>
+        ) : null}
+      </OpenAllExpandedContext.Provider>
+    </span>
+  );
+}
+
+
+function DomTree() {
+  const [filteredTree, setFilteredTree] = React.useState(null);
+  const [tree, setTree] = React.useState(null);
+  const [headTree, setHeadTree] = React.useState(null);
+  const [selectedId, onSelect] = React.useState(0);
+  const [searching, setSearching] = React.useState(false);
+  React.useEffect(() => {
+    const tree = getDocumentTree(document.body);
+    const headTree = getDocumentTree(document.head);
+    setFilteredTree(tree);
+    setHeadTree(headTree);
+    setTree(tree);
+    onSelect(tree.id);
+  }, []);
+
+  const searchTree = (searchText) => {
+    if (!searchText) {
+      setFilteredTree(tree);
+      setSearching(false);
+    } else {
+      let filteredTree = filterTreeNodesWithText(searchText, tree);
+      onSelect(filteredTree ? filteredTree.id : null);
+      setFilteredTree(filteredTree);
+      setSearching(true);
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <SearchText onSearch={searchTree} />
+      <div className="dom-trees">
+        {headTree ? (
+          <ParentNode
+            element={headTree}
+            selectedId={selectedId}
+            onSelect={onSelect}
+          />
+        ) : null}
+        <SearchingContext.Provider value={searching}>
+          {filteredTree ? (
+            <ParentNode
+              element={filteredTree}
+              selectedId={selectedId}
+              onSelect={onSelect}
+            />
+          ) : null}
+        </SearchingContext.Provider>
+      </div>
+    </React.Fragment>
+  );
+}
+
+
+function Icon({onClick, type, variant, iconClassName='class', hidden=false, disable=false}){
+    const handleClick= e=> {
+        if(!hidden && onClick)
+            onClick();
+            
+    }
+    return <div className={cList({
+                            icon: true,
+                            [type]: true,
+                            [variant]: true,
+                            hidden,
+                            disable,
+                            [iconClassName]:true
+                        })}
+                        onClick={handleClick}></div>
+            
+}
+
+function Node({
+  id,
+  locked = false,
+  hasChild = false,
+  content,
+  type = FILE,
+  expanded,
+  toggleExpand,
+  height,
+  selectedId = 0,
+  onSelect,
+  canCollapse = true,
+}) {
+  const handleToggle = (e) => {
+    // e.stopPropagation();
+    toggleExpand();
+  };
+  const handleSelection = (e) => {
+    e.stopPropagation();
+    onSelect(id);
+  };
+  const iconType = type === FILE ? "file" : locked ? "lock-folder" : "folder";
+  return (
+    <div
+      className={cList({ node: true, leaf: true, selected: id === selectedId })}
+      onClick={handleSelection}
+      style={{
+        paddingLeft: `calc(${height * 14}px + ${height * 0.75 + 1}rem)`,
+      }}
+    >
+      <Icon
+        hidden={type !== FOLDER || !hasChild}
+        type={expanded ? "expand" : "collapse"}
+        disable={!canCollapse || locked}
+        iconClassName={cList({ selected: id === selectedId })}
+        onClick={toggleExpand}/>
+      <Icon type={iconType}/>
+      <div
+        title={content}
+        className="content text-node"
+        style={{ width: `auto` }}
+      >
+        {content}
+      </div>
+    </div>
+  );
+}
+
+
+function ParentNode({ element, height = 0, selectedId, onSelect }) {
+  const { id, locked, content, type, children } = element;
+
+  const [isExpanded, setExpanded] = React.useState(false);
+  const allExpanded = React.useContext(OpenAllExpandedContext);
+  const inSearchMode = React.useContext(SearchingContext);
+
+  React.useEffect(() => {
+    if (height < 1 || allExpanded) setExpanded(true && !locked);
+  }, []);
+  const toggleExpand = (e) => setExpanded(element.locked ? false : !isExpanded);
+  return (
+    <div className="parent-node container">
+      <Node
+        locked={locked}
+        content={content}
+        type={type}
+        id={id}
+        hasChild={children.length}
+        toggleExpand={toggleExpand}
+        expanded={isExpanded || inSearchMode}
+        canCollapse={!inSearchMode}
+        height={height}
+        selectedId={selectedId}
+        onSelect={onSelect}
+      />
+      {children.length ? (
+        <div
+          className={cList({
+            children: true,
+            expanded: isExpanded || inSearchMode,
+          })}
+        >
+          {element.children.map((c) => {
+            return c.type === 1 ? (
+              <ParentNode
+                key={c.id}
+                element={c}
+                height={height + 1}
+                selectedId={selectedId}
+                onSelect={onSelect}
+              />
+            ) : (
+              <Node
+                key={c.id}
+                id={c.id}
+                content={c.content}
+                height={height + 1}
+                selectedId={selectedId}
+                onSelect={onSelect}
+              />
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+
+function SearchText({ onSearch }) {
+  const [searchText, setSearchText] = React.useState("");
+  
+  const handleTextChange = (e) => {
+    setSearchText(e.target.value);
+    onSearch(e.target.value);
+  };
+
+  const handleClear = (e) => {
+    setSearchText("");
+    onSearch(null);
+  };
+
+  return (
+    <div className="search-box">
+      <input
+        placeholder="Filter file nodes with matching text"
+        value={searchText}
+        onChange={handleTextChange}
+      ></input>
+      <Icon
+        hidden={!searchText}
+        iconClassName="close tertiary"
+        onClick={handleClear}
+      ></Icon>
+    </div>
+  );
+}
+
+</script>
+</head>
+
+<body>
+    <div id="root"></div>
+    
+    <div> 
+        <div class='requirements'>
+            <h1 id="exercise-dom-tree-as-a-file-system bold">Exercise: DOM Tree as a File System</h1>
+            <p>This exercise is to build something that represents the DOM tree of a website as a file and folder
+                explorer.</p>
+            <p>Your implementation will be evaluated technically, but also by a designer, so CSS fidelity is important.
+            </p>
+            <p>You can use any tools or libraries you&#39;d like. (except an off-the-shelf tree control :)</p>
+            <h2 id="requirements">Requirements</h2>
+            <h3 id="general">General</h3>
+            <ul>
+                <li>Represent all the nodes in a DOM tree starting with <code>head</code> and <code>body</code> at the
+                    top level.</li>
+                <li>Do not include comment tags in the output, only text nodes and elements</li>
+                <li>Provided code should be runnable by a static web server without needing a build step.</li>
+            </ul>
+            <h3 id="appearance">Appearance</h3>
+            <ul>
+                <li>What you build should look like a modal (Doesn&#39;t need to function like one. eg: open/close and
+                    dragging it around are not necessary)</li>
+                <li>Visually has the same colors, alignment, sizing, and shading as <code>mockup.png</code></li>
+                <li>Make the folder represented by the <code>head</code> tag &quot;private&quot;, with a red icon
+                    appearance.</li>
+            </ul>
+            <h3 id="interaction">Interaction</h3>
+            <ul>
+                <li>Implement some sort of basic selection appearance, but complex single-select or multi-select rules
+                    aren&#39;t required.</li>
+                <li>Both files and folders should be selectable.</li>
+            </ul>
+            <h3 id="folders">Folders</h3>
+            <ul>
+                <li>DOM element nodes should be represented as &quot;folders&quot;</li>
+                <li>Display the DOM element tag name next to folders</li>
+                <li>Folders can be expanded and collapsed by clicking</li>
+            </ul>
+            <h3 id="files">Files</h3>
+            <ul>
+                <li>Text nodes should be represented as &quot;files&quot;</li>
+                <li>Display a single line of text content next to &quot;files&quot;</li>
+                <li>Text truncates with ellipsis if too wide</li>
+            </ul>
+            <h2 id="example">Example</h2>
+            <p>For clarity, here&#39;s an example DOM section:</p>
+            <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+                Some Text
+                <span class="hljs-comment">&lt;!-- A Comment --&gt;</span>
+                More Text
+            <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+            </code></pre>
+            <p>This section of the DOM should be represented in the tree like this:</p>
+            <ul>
+                <li>body<ul>
+                        <li>p<ul>
+                                <li>Some Text</li>
+                                <li>More Text</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>The two text nodes are represented as files, comments are not shown, and containing elements are
+                represented as folders.</p>
+            <img src='resources/mockup.png'></img>
+            <h2 id="evaluation-criteria">Evaluation Criteria</h2>
+            <ol>
+                <li>Functional Requirements met</li>
+                <li>DRY, reusable, well-thought-out code</li>
+                <li>Pixel-perfectness of CSS matching <code>mockup.png</code> in Chrome</li>
+            </ol>
+        </div>
+    </div>
+
+    '></script>
+<script type="text/babel">
+ReactDOM.render(<DialogLauncher />,
+    document.getElementById('root'))
+</script>
+</body>
+
+</html>

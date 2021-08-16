@@ -14,7 +14,7 @@
 or
 
 *  You can browse standalone `file:///` version as well 
->   `file:///<base_folder>/solution/allInOne.html`
+>   `file:///<base_folder>/solution/output.html`
 
 
 ### Assumptions 
@@ -22,8 +22,8 @@ or
 * No Multi selection
 * HEAD tag is locked and not expandable
 > You can quickly modify code though to enable expand
-> if you are using `file:///` version look in ParentNode of allInOne.html
-> for other two versions use `solution/scripts/components/ParentNode.js`
+> Goto `solution/scripts/components/ParentNode.js` & run ```npm run build```
+> or fix in output.html 
 * Tag labels are used as it is provided by DOM
 * By default mmodal don't show all nodes expanded on first childs
 > You can close modal and **Check** `Open with all nodes expanded` and press `Show DOM Tree`

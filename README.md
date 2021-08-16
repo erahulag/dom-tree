@@ -25,11 +25,12 @@ or
 > Goto `solution/scripts/components/ParentNode.js` & run ```npm run build```
 > or fix in output.html 
 * Tag labels are used as it is provided by DOM
-* By default mmodal don't show all nodes expanded on first childs
+* By default mmodal don't show all nodes expanded only first childs
 > You can close modal and **Check** `Open with all nodes expanded` and press `Show DOM Tree`
-* Left/Bottom Link in mock will 
+* Left/Bottom Link will browse to README.md
 
 * Added search function for `text` nodes as well
 * In search mode tree can't be collapsed
 * All enabled actionable elements are set to pointer cursor
 * All diabled/not-allowed elemnents are set to not-allowed cursor as well
+* When Dialog opened body cant scroll. 

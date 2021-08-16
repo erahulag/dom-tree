@@ -12,16 +12,16 @@
     <link rel="stylesheet" type='text/css' href='./css/html.css' ></link>  
 
     
-    <script src='scripts/libs/react.js'></script>
+    <script src='scripts/libs/react.js'></script> 
     <script src='scripts/libs/react-dom.js'></script>
-    <script src='scripts/libs/babel.js'></script>
+    <!-- <script src='scripts/libs/babel.js'></script> -->
+    <!-- <script src="https://unpkg.com/react@16/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js"></script> -->
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
 
     <script src='scripts/utils/constants.js'></script>
-    
+    <script src='scripts/utils/utils.js'></script> 
 
-    <script src='scripts/utils/utils.js'></script>
-    <script src='scripts/utils/constants.js'></script>
-    
     <script name='expandContext' type="text/babel">
         const OpenAllExpandedContext = React.createContext();
         const SearchingContext = React.createContext();
@@ -315,8 +315,7 @@
     </div>
      
     <script type="text/babel"> 
-        ReactDOM.render(<DialogLauncher />,
-                document.getElementById('root'))
+        ReactDOM.render(<DialogLauncher />, document.getElementById('root'))
     </script>
   </body>
 

@@ -24,4 +24,12 @@ or
 > You can quickly modify code though to enable expand
 > if you are using `file:///` version look in ParentNode of allInOne.html
 > for other two versions use `solution/scripts/components/ParentNode.js`
-* Tag Names are not uses as it is provided by DOM
+* Tag labels are used as it is provided by DOM
+* By default mmodal don't show all nodes expanded on first childs
+> You can close modal and **Check** `Open with all nodes expanded` and press `Show DOM Tree`
+* Left/Bottom Link in mock will 
+
+* Added search function for `text` nodes as well
+* In search mode tree can't be collapsed
+* All enabled actionable elements are set to pointer cursor
+* All diabled/not-allowed elemnents are set to not-allowed cursor as well
